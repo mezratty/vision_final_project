@@ -28,7 +28,7 @@ def get_movement_data(folder_name):
                 keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
                 del keypoints[2::3] # Check how to make this robust later
                 matrix[:,i] = keypoints
-        mat_fname = directory[:-1] + '.mat'
+        mat_fname = 'mat/' + directory[10:-1] + '.mat'
         sio.savemat(mat_fname, mdict = {'keypoints': matrix})
 
 def get_maia_turn():
@@ -38,7 +38,7 @@ def get_maia_jump():
     get_movement_data('maia_jump')
 
 def get_maia_fall():
-    get_movement_data('maia_turn')
+    get_movement_data('maia_fall')
 
 def get_sliu_turn():
     get_movement_data('sliu_turn')
