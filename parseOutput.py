@@ -19,7 +19,7 @@ for file in allFiles:
 	# print "current file is: " + file
 	# data = json.load(open(file))
 
-print keypoints
+print (keypoints)
 
 io.savemat('maiaT1.mat', mdict = keypoints)
 
