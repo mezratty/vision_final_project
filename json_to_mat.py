@@ -13,7 +13,7 @@ def get_movement_data(folder_name):
     # Get all directories in a folder
     subdirectories = glob.glob(folder_name + "/*/")
     # Iterate through each subdirectory (the various examples of falls and turns)
-    print(subdirectories)
+    # print(subdirectories)
     for directory in subdirectories:
         path = directory + '*.json'
         list_files = sorted(glob.glob(path)) # Sorted in order to preserve time sensitive info
@@ -28,8 +28,10 @@ def get_movement_data(folder_name):
                 keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
                 del keypoints[2::3] # Check how to make this robust later
                 matrix[:,i] = keypoints
+                # print(directory[5:9])
+                label = directory[5:9]
         mat_fname = 'mat/' + directory[10:-1] + '.mat'
-        sio.savemat(mat_fname, mdict = {'keypoints': matrix})
+        sio.savemat(mat_fname, mdict = {'keypoints': matrix, 'label': label})
 
 def get_maia_turn():
     get_movement_data('maia_turn')
