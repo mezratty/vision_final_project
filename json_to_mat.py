@@ -8,6 +8,7 @@ import numpy as np
 NUM_FEATURES = 18 * 2
 # Number of frames is the number of frames per movement returned to us
 NUM_FRAMES = 80
+NUM_CLASSES = 6
 
 def get_movement_data(folder_name, label_val):
     # Get all directories in a folder
@@ -28,9 +29,11 @@ def get_movement_data(folder_name, label_val):
                 keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
                 del keypoints[2::3] # Check how to make this robust later
                 matrix[:, i] = keypoints
-
+        
         mat_fname = 'mat/' + directory[10:-1] + '.mat'
-        sio.savemat(mat_fname, mdict = {'keypoints': matrix, 'label': label_val})
+        label = np.zeros(NUM_CLASSES)
+        label[label_val - 1] = 1
+        sio.savemat(mat_fname, mdict = {'keypoints': matrix, 'label': label})
 
 # Label code
 # Turn: 1 and 4
