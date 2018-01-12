@@ -8,15 +8,18 @@ NUM_FEATURES = 18 * 2
 # Number of frames is the number of frames per movement returned to us
 NUM_FRAMES = 80
 
-def get_one_dimension(num_trials, joint_index):
+def get_one_keypoint(num_trials, joint_index):
     path = 'mat/*.mat'
-    list_files = glob.glob(path)
-    assert num_trials < 59
+    # Sorted list of files so that we know what action is being loaded to what index
+    list_files = sorted(glob.glob(path))
+    assert num_trials <= 59
     assert joint_index < NUM_FEATURES
-   
+ 
     matrix = np.zeros([num_trials, NUM_FRAMES])
     for i in range(num_trials):
-        mat_contents = sio.loadmat(list_files[i])
+        fname = list_files[i]
+        print(fname)
+        mat_contents = sio.loadmat(fname)
         matrix[i, :] = mat_contents['keypoints'][joint_index, :]
-   
+ 
     return matrix
