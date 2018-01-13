@@ -8,7 +8,7 @@ import numpy as np
 NUM_FEATURES = 36
 # Number of frames is the number of frames per movement returned to us
 NUM_FRAMES = 80
-NUM_CLASSES = 3
+NUM_CLASSES = 6
 
 def get_train_movement_data(folder_name, label_val):
     # Get all directories in a folder
@@ -71,23 +71,7 @@ def get_test_movement_data(folder_name, label_val):
 # Jump: 2
 # Fall: 3
 
-def get_maia_turn():
-    get_train_movement_data('maia_turn', 1)
-
-def get_maia_jump():
-    get_train_movement_data('maia_jump', 2)
-
-def get_maia_fall():
-    get_train_movement_data('maia_fall', 3)
-
-def get_sliu_turn():
-    get_train_movement_data('sliu_turn', 1)
-
-def get_sliu_jump():
-    get_train_movement_data('sliu_jump', 2)
-
-def get_sliu_fall():
-    get_train_movement_data('sliu_fall', 3)
+###### 3 classes
 
 # def get_maia_turn():
 #     get_train_movement_data('maia_turn', 1)
@@ -99,72 +83,47 @@ def get_sliu_fall():
 #     get_train_movement_data('maia_fall', 3)
 
 # def get_sliu_turn():
-#     get_train_movement_data('sliu_turn', 4)
+#     get_train_movement_data('sliu_turn', 1)
 
 # def get_sliu_jump():
-#     get_train_movement_data('sliu_jump', 5)
+#     get_train_movement_data('sliu_jump', 2)
 
 # def get_sliu_fall():
-#     get_train_movement_data('sliu_fall', 6)
+#     get_train_movement_data('sliu_fall', 3)
+
+###### 6 classes
+
+def get_maia_turn():
+    get_train_movement_data('maia_turn', 1)
+
+def get_maia_jump():
+    get_train_movement_data('maia_jump', 2)
+
+def get_maia_fall():
+    get_train_movement_data('maia_fall', 3)
+
+def get_sliu_turn():
+    get_train_movement_data('sliu_turn', 4)
+
+def get_sliu_jump():
+    get_train_movement_data('sliu_jump', 5)
+
+def get_sliu_fall():
+    get_train_movement_data('sliu_fall', 6)
 
 ################### TESTING DATA ####################
 
-def test_1():
-    get_test_movement_data('test_keypoints/test1_maia_turn', 1)
 
-def test_2():
-    get_test_movement_data('test_keypoints/test2_maia_jump', 2)
-
-def test_3():
-    get_test_movement_data('test_keypoints/test3_maia_jump', 2)
-
-def test_4():
-    get_test_movement_data('test_keypoints/test4_maia_turn', 1)
-
-def test_5():
-    get_test_movement_data('test_keypoints/test5_maia_fall', 3)
-
-def test_6():
-    get_test_movement_data('test_keypoints/test6_maia_jump', 2)
-
-def test_7():
-    get_test_movement_data('test_keypoints/test7_maia_fall', 3)
-
-def test_8():
-    get_test_movement_data('test_keypoints/test8_maia_double', 1)
-
-def test_9():
-    get_test_movement_data('test_keypoints/test9_both_turn', 1)
-
-def test_10():
-    get_test_movement_data('test_keypoints/test10_both_turn', 1)
-
-def test_11():
-    get_test_movement_data('test_keypoints/test11_both_jump', 2)
-
-def test_12():
-    get_test_movement_data('test_keypoints/test12_maia_up', 3)
-
-def test_13():
-    get_test_movement_data('test_keypoints/test13_maia_occ', 2)
-
-def test_14():
-    get_test_movement_data('test_keypoints/test14_maia_jump_close', 2)
-
-def test_15():
-    get_test_movement_data('test_keypoints/test15_maia_fall_close', 3)
-
-def test_16():
-    get_test_movement_data('test_keypoints/test16_maia_turn_close', 1)
+###### 3 classes
 
 # def test_1():
 #     get_test_movement_data('test_keypoints/test1_maia_turn', 1)
 
 # def test_2():
-#     get_test_movement_data('test_keypoints/test2_maia_jump', 5)
+#     get_test_movement_data('test_keypoints/test2_maia_jump', 2)
 
 # def test_3():
-#     get_test_movement_data('test_keypoints/test3_maia_jump', 5)
+#     get_test_movement_data('test_keypoints/test3_maia_jump', 2)
 
 # def test_4():
 #     get_test_movement_data('test_keypoints/test4_maia_turn', 1)
@@ -176,7 +135,7 @@ def test_16():
 #     get_test_movement_data('test_keypoints/test6_maia_jump', 2)
 
 # def test_7():
-#     get_test_movement_data('test_keypoints/test7_maia_fall', 6)
+#     get_test_movement_data('test_keypoints/test7_maia_fall', 3)
 
 # def test_8():
 #     get_test_movement_data('test_keypoints/test8_maia_double', 1)
@@ -191,7 +150,7 @@ def test_16():
 #     get_test_movement_data('test_keypoints/test11_both_jump', 2)
 
 # def test_12():
-#     get_test_movement_data('test_keypoints/test12_maia_up', 6)
+#     get_test_movement_data('test_keypoints/test12_maia_up', 3)
 
 # def test_13():
 #     get_test_movement_data('test_keypoints/test13_maia_occ', 2)
@@ -204,6 +163,56 @@ def test_16():
 
 # def test_16():
 #     get_test_movement_data('test_keypoints/test16_maia_turn_close', 1)
+
+##### 6 classes 
+
+def test_1():
+    get_test_movement_data('test_keypoints/test1_maia_turn', 1)
+
+def test_2():
+    get_test_movement_data('test_keypoints/test2_maia_jump', 5)
+
+def test_3():
+    get_test_movement_data('test_keypoints/test3_maia_jump', 5)
+
+def test_4():
+    get_test_movement_data('test_keypoints/test4_maia_turn', 1)
+
+def test_5():
+    get_test_movement_data('test_keypoints/test5_maia_fall', 3)
+
+def test_6():
+    get_test_movement_data('test_keypoints/test6_maia_jump', 2)
+
+def test_7():
+    get_test_movement_data('test_keypoints/test7_maia_fall', 6)
+
+def test_8():
+    get_test_movement_data('test_keypoints/test8_maia_double', 1)
+
+def test_9():
+    get_test_movement_data('test_keypoints/test9_both_turn', 1)
+
+def test_10():
+    get_test_movement_data('test_keypoints/test10_both_turn', 1)
+
+def test_11():
+    get_test_movement_data('test_keypoints/test11_both_jump', 2)
+
+def test_12():
+    get_test_movement_data('test_keypoints/test12_maia_up', 6)
+
+def test_13():
+    get_test_movement_data('test_keypoints/test13_maia_occ', 2)
+
+def test_14():
+    get_test_movement_data('test_keypoints/test14_maia_jump_close', 2)
+
+def test_15():
+    get_test_movement_data('test_keypoints/test15_maia_fall_close', 3)
+
+def test_16():
+    get_test_movement_data('test_keypoints/test16_maia_turn_close', 1)
 
 def main():
     get_maia_jump()
