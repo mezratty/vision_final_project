@@ -20,7 +20,7 @@ def get_train_movement_data(folder_name, label_val):
         matrix = np.zeros([NUM_FEATURES, NUM_FRAMES])
 
         # For each instance of a fall and turn, get 80 frames and save to a mat file
-        x = (len(list_files) - NUM_FRAMES) / 2
+        x = (len(list_files) - NUM_FRAMES) // 2
         for i in range(x, NUM_FRAMES + x):
             # Later will want to edit to choose center 80 frames
             fname = list_files[i]
@@ -39,19 +39,23 @@ def get_train_movement_data(folder_name, label_val):
 # The way that the data is formatted means that there are no subdirectories for the test data
 # As a result, we get the data in a slightly different way
 def get_test_movement_data(folder_name, label_val):
-    list_files = sorted(glob.glob(folder_name) + '/*.json')
+    list_files = sorted(glob.glob(folder_name + '/*.json'))
     matrix = np.zeros([NUM_FEATURES, NUM_FRAMES])
-    x = (len(list_files) - NUM_FRAMES) / 2
+    x = (len(list_files) - NUM_FRAMES) // 2
     for i in range(x, NUM_FRAMES + x):
         # Later will want to edit to choose center 80 frames
         fname = list_files[i]
         with open(fname) as json_file:
+            index = i - x
             json_data = json.load(json_file)
-            keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
-            del keypoints[2::3] # Check how to make this robust later
-            matrix[:, i] = keypoints
-    
-    mat_fname = 'mat_test/' + folder_name[15:-1] + '.mat'
+            if len(json_data["people"]) == 0:
+                matrix[:, index] = np.zeros(NUM_FEATURES)
+            else:
+                keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
+                del keypoints[2::3]
+                matrix[:, index] = keypoints
+
+    mat_fname = 'mat_test/' + folder_name[15:] + '.mat'
     label = np.zeros(NUM_CLASSES)
     label[label_val - 1] = 1
     sio.savemat(mat_fname, mdict = {'keypoints': matrix, 'label': label})

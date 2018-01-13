@@ -16,16 +16,34 @@ def train_get_one_keypoint(num_trials, joint_index):
     assert num_trials <= 59
     assert joint_index < NUM_FEATURES
 
-    move_data = np.zeros([num_trials, NUM_FRAMES])
+    train_data = np.zeros([num_trials, NUM_FRAMES])
     labels = np.zeros([num_trials, NUM_CLASSES])
     for i in range(num_trials):
         fname = list_files[i]
-        print(fname)
         mat_contents = sio.loadmat(fname)
-        move_data[i, :] = mat_contents['keypoints'][joint_index, :]
+        train_data[i, :] = mat_contents['keypoints'][joint_index, :]
         labels[i, :] = mat_contents['label']
 
-    return move_data, labels
+    return train_data, labels
+
+def train_get_three_dimension(num_trials):
+    path = 'mat_test/*.mat'
+    list_files = sorted(glob.glob(path))
+    assert num_trials <= 59
+
+    train_data = np.zeros([num_trials, NUM_FRAMES, NUM_FEATURES])
+    labels = np.zeros([num_trials, NUM_CLASSES])
+    for i in range(num_trials):
+        for j in range(NUM_FEATURES):
+            fname = list_files[i]
+            mat_contents = sio.loadmat(fname)
+            # mat_contents['keypoints'][j, :] should be of shape(1, 80)
+            # getting noses through 80 frames
+            train_data[i, :, j] = mat_contents['keypoints'] [j, :]
+
+        labels[i, :] = mat_contents['label']
+    return train_data, labels
+
 
 def test_get_one_keypoint(num_trials, joint_index):
     path = 'mat_test/*.mat'
@@ -33,13 +51,13 @@ def test_get_one_keypoint(num_trials, joint_index):
     assert num_trials <= 16
     assert joint_index < NUM_FEATURES
 
-    move_data = np.zeros([num_trials, NUM_FRAMES])
+    test_data = np.zeros([num_trials, NUM_FRAMES])
     labels = np.zeros([num_trials, NUM_CLASSES])
     for i in range(num_trials):
         fname = list_files[i]
         print(fname)
         mat_contents = sio.loadmat(fname)
-        move_data[i, :] = mat_contents['keypoints'][joint_index, :]
+        test_data[i, :] = mat_contents['keypoints'][joint_index, :]
         labels[i, :] = mat_contents['label']
 
-    return move_data, labels
+    return test_data, labels
