@@ -14,7 +14,6 @@ def get_movement_data(folder_name, label_val):
     # Get all directories in a folder
     subdirectories = glob.glob(folder_name + "/*/")
     # Iterate through each subdirectory (the various examples of falls and turns)
-    # print(subdirectories)
     for directory in subdirectories:
         path = directory + '*.json'
         list_files = sorted(glob.glob(path)) # Sorted in order to preserve time sensitive info
@@ -29,14 +28,18 @@ def get_movement_data(folder_name, label_val):
                 keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
                 del keypoints[2::3] # Check how to make this robust later
                 matrix[:, i] = keypoints
+
         # Folder name for tests is formatted slightly differently, hence the if-else statement
-        if 'test' in folder_name:
-            mat_fname = 'test_mast/' + directory[15:-1] + '.mat'
-        else :
-            mat_fname = 'mat/' + directory[10:-1] + '.mat'
+        mat_fname = 'mat/' + directory[10:-1] + '.mat'
         label = np.zeros(NUM_CLASSES)
         label[label_val - 1] = 1
         sio.savemat(mat_fname, mdict = {'keypoints': matrix, 'label': label})
+
+# The way that the data is formatted means that there are no subdirectories for the test data
+# As a result, we get the data in a slightly different way
+def get_test_movement_data(folder_name, label_val):
+    mat_fname = 'mat_test/' + directory[15:-1] + '.mat'
+
 
 # Label code
 # Turn: 1 (turn right) and 4 (turn left)
