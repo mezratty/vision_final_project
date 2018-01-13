@@ -21,7 +21,8 @@ def get_movement_data(folder_name, label_val):
         matrix = np.zeros([NUM_FEATURES, NUM_FRAMES])
 
         # For each instance of a fall and turn, get 80 frames and save to a mat file
-        for i in range(NUM_FRAMES):
+        x = (len(subdirectories) - NUM_FRAMES) / 2
+        for i in range(x, NUM_FRAMES + x):
             # Later will want to edit to choose center 80 frames
             fname = list_files[i]
             with open(fname) as json_file:
