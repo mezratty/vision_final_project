@@ -29,8 +29,11 @@ def get_movement_data(folder_name, label_val):
                 keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
                 del keypoints[2::3] # Check how to make this robust later
                 matrix[:, i] = keypoints
-        
-        mat_fname = 'mat/' + directory[10:-1] + '.mat'
+        # Folder name for tests is formatted slightly differently, hence the if-else statement
+        if 'test' in folder_name:
+            mat_fname = 'test_mast/' + directory[15:-1] + '.mat'
+        else :
+            mat_fname = 'mat/' + directory[10:-1] + '.mat'
         label = np.zeros(NUM_CLASSES)
         label[label_val - 1] = 1
         sio.savemat(mat_fname, mdict = {'keypoints': matrix, 'label': label})
@@ -57,13 +60,77 @@ def get_sliu_jump():
 def get_sliu_fall():
     get_movement_data('sliu_fall', 6)
 
+################### TESTING DATA ####################
+def test_1():
+    get_movement_data('test_keypoints/test1_maia_turn', 1)
+
+def test_2():
+    get_movement_data('test_keypoints/test2_maia_jump', 2)
+
+def test_3():
+    get_movement_data('test_keypoints/test3_maia_jump', 2)
+
+def test_4():
+    get_movement_data('test_keypoints/test4_maia_turn', 1)
+
+def test_5():
+    get_movement_data('test_keypoints/test5_maia_fall', 3)
+
+def test_6():
+    get_movement_data('test_keypoints/test6_maia_jump', 2)
+
+def test_7():
+    get_movement_data('test_keypoints/test7_maia_fall', 3)
+
+def test_8():
+    get_movement_data('test_keypoints/test8_maia_double', 2)
+
+def test_9():
+    get_movement_data('test_keypoints/test9_both_turn', 1)
+
+def test_10():
+    get_movement_data('test_keypoints/test10_both_turn', 1)
+
+def test_11():
+    get_movement_data('test_keypoints/test11_both_jump', 2)
+
+# Double check what this label should be
+def test_12():
+    get_movement_data('test_keypoints/test12_maia_up', 3)
+
+# Double check what this move is I forget
+def test_13():
+    get_movement_data('test_keypoints/test13_maia_occ', 2)
+
+def test_14():
+    get_movement_data('test_keypoints/test14_maia_jump_close', 2)
+
+def test_15():
+    get_movement_data('test_keypoints/test15_maia_fall_close', 3)
+
+def test_16():
+    get_movement_data('test_keypoints/test16_maia_turn_close', 1)
+
 def main():
-    get_maia_jump()
-    get_maia_turn()
-    get_maia_fall()
-    get_sliu_turn()
-    get_sliu_fall()
-    get_sliu_jump()
+    # get_maia_jump()
+    # get_maia_turn()
+    # get_maia_fall()
+    # get_sliu_turn()
+    # get_sliu_fall()
+    # get_sliu_jump()
+
+    ###### TESTING DATA ########
+    test_1()
+    test_2()
+    test_3()
+    test_4()
+    test_5()
+    test_6()
+    test_7()
+    test_8()
+    test_9()
+    test_10()
+    test_11()
 
 if __name__ == "__main__":
     main()
