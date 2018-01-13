@@ -39,9 +39,9 @@ def get_movement_data(folder_name, label_val):
         sio.savemat(mat_fname, mdict = {'keypoints': matrix, 'label': label})
 
 # Label code
-# Turn: 1 and 4
-# Jump: 2 and 5
-# Fall: 3 and 6
+# Turn: 1 (turn right) and 4 (turn left)
+# Jump: 2 (jump to stage right) and 5 (jump to stage left)
+# Fall: 3 (to stage right) and 6 (fall to stage left)
 def get_maia_turn():
     get_movement_data('maia_turn', 1)
 
@@ -65,10 +65,10 @@ def test_1():
     get_movement_data('test_keypoints/test1_maia_turn', 1)
 
 def test_2():
-    get_movement_data('test_keypoints/test2_maia_jump', 2)
+    get_movement_data('test_keypoints/test2_maia_jump', 5)
 
 def test_3():
-    get_movement_data('test_keypoints/test3_maia_jump', 2)
+    get_movement_data('test_keypoints/test3_maia_jump', 5)
 
 def test_4():
     get_movement_data('test_keypoints/test4_maia_turn', 1)
@@ -80,10 +80,10 @@ def test_6():
     get_movement_data('test_keypoints/test6_maia_jump', 2)
 
 def test_7():
-    get_movement_data('test_keypoints/test7_maia_fall', 3)
+    get_movement_data('test_keypoints/test7_maia_fall', 5)
 
 def test_8():
-    get_movement_data('test_keypoints/test8_maia_double', 2)
+    get_movement_data('test_keypoints/test8_maia_double', 1)
 
 def test_9():
     get_movement_data('test_keypoints/test9_both_turn', 1)
@@ -94,11 +94,9 @@ def test_10():
 def test_11():
     get_movement_data('test_keypoints/test11_both_jump', 2)
 
-# Double check what this label should be
 def test_12():
-    get_movement_data('test_keypoints/test12_maia_up', 3)
+    get_movement_data('test_keypoints/test12_maia_up', 6)
 
-# Double check what this move is I forget
 def test_13():
     get_movement_data('test_keypoints/test13_maia_occ', 2)
 
