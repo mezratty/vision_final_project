@@ -7,7 +7,7 @@ import numpy as np
 NUM_FEATURES = 18 * 2
 # Number of frames is the number of frames per movement returned to us
 NUM_FRAMES = 80
-NUM_CLASSES = 6
+NUM_CLASSES = 3
 
 def train_get_one_keypoint(num_trials, joint_index):
     path = 'mat/*.mat'
@@ -64,7 +64,6 @@ def test_get_three_dimension(num_trials):
     path = 'mat_test/*.mat'
     list_files = sorted(glob.glob(path))
     assert num_trials <= 16
-
     train_data = np.zeros([num_trials, NUM_FRAMES, NUM_FEATURES])
     labels = np.zeros([num_trials, NUM_CLASSES])
     for i in range(num_trials):
