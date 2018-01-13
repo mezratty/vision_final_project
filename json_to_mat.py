@@ -5,7 +5,7 @@ import scipy.io as sio
 import numpy as np
 
 # Number of features is points detected * 2 because of x and y coordinates
-NUM_FEATURES = 18 * 2
+NUM_FEATURES = 36
 # Number of frames is the number of frames per movement returned to us
 NUM_FRAMES = 80
 NUM_CLASSES = 3

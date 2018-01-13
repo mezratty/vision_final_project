@@ -4,7 +4,7 @@ import scipy.io as sio
 import numpy as np
 
 # Number of features is points detected * 2 because of x and y coordinates
-NUM_FEATURES = 18 * 2
+NUM_FEATURES = 36
 # Number of frames is the number of frames per movement returned to us
 NUM_FRAMES = 80
 NUM_CLASSES = 3
@@ -53,7 +53,6 @@ def test_get_one_keypoint(num_trials, joint_index):
     labels = np.zeros([num_trials, NUM_CLASSES])
     for i in range(num_trials):
         fname = list_files[i]
-        print(fname)
         mat_contents = sio.loadmat(fname)
         test_data[i, :] = mat_contents['keypoints'][joint_index, :]
         labels[i, :] = mat_contents['label']
