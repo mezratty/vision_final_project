@@ -9,10 +9,10 @@ NUM_FEATURES = 18 * 2
 NUM_FRAMES = 80
 NUM_CLASSES = 6
 
-def get_one_keypoint(num_trials, joint_index):
+def train_get_one_keypoint(num_trials, joint_index):
     path = 'mat/*.mat'
     # Note: change from before, no longer need sorted list of files b/c of labels
-    list_files = glob.glob(path)
+    list_files = sorted(glob.glob(path))
     assert num_trials <= 59
     assert joint_index < NUM_FEATURES
 
@@ -24,5 +24,22 @@ def get_one_keypoint(num_trials, joint_index):
         mat_contents = sio.loadmat(fname)
         move_data[i, :] = mat_contents['keypoints'][joint_index, :]
         labels[i, :] = mat_contents['label']
- 
+
+    return move_data, labels
+
+def test_get_one_keypoint(num_trials, joint_index):
+    path = 'mat_test/*.mat'
+    list_files = sorted(glob.glob(path))
+    assert num_trials <= 16
+    assert joint_index < NUM_FEATURES
+
+    move_data = np.zeros([num_trials, NUM_FRAMES])
+    labels = np.zeros([num_trials, NUM_CLASSES])
+    for i in range(num_trials):
+        fname = list_files[i]
+        print(fname)
+        mat_contents = sio.loadmat(fname)
+        move_data[i, :] = mat_contents['keypoints'][joint_index, :]
+        labels[i, :] = mat_contents['label']
+
     return move_data, labels
