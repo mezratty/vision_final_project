@@ -27,7 +27,7 @@ def train_get_one_keypoint(num_trials, joint_index):
     return train_data, labels
 
 def train_get_three_dimension(num_trials):
-    path = 'mat_test/*.mat'
+    path = 'mat/*.mat'
     list_files = sorted(glob.glob(path))
     assert num_trials <= 59
 
@@ -37,8 +37,6 @@ def train_get_three_dimension(num_trials):
         for j in range(NUM_FEATURES):
             fname = list_files[i]
             mat_contents = sio.loadmat(fname)
-            # mat_contents['keypoints'][j, :] should be of shape(1, 80)
-            # getting noses through 80 frames
             train_data[i, :, j] = mat_contents['keypoints'] [j, :]
 
         labels[i, :] = mat_contents['label']
@@ -61,3 +59,19 @@ def test_get_one_keypoint(num_trials, joint_index):
         labels[i, :] = mat_contents['label']
 
     return test_data, labels
+
+def test_get_three_dimension(num_trials):
+    path = 'mat_test/*.mat'
+    list_files = sorted(glob.glob(path))
+    assert num_trials <= 16
+
+    train_data = np.zeros([num_trials, NUM_FRAMES, NUM_FEATURES])
+    labels = np.zeros([num_trials, NUM_CLASSES])
+    for i in range(num_trials):
+        for j in range(NUM_FEATURES):
+            fname = list_files[i]
+            mat_contents = sio.loadmat(fname)
+            train_data[i, :, j] = mat_contents['keypoints'] [j, :]
+
+        labels[i, :] = mat_contents['label']
+    return train_data, labels
