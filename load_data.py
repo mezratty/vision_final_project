@@ -7,7 +7,7 @@ import numpy as np
 NUM_FEATURES = 36
 # Number of frames is the number of frames per movement returned to us
 NUM_FRAMES = 80
-NUM_CLASSES = 6
+NUM_CLASSES = 3
 
 def train_get_one_keypoint(num_trials, joint_index):
     path = 'mat/*.mat'
