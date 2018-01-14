@@ -116,11 +116,11 @@ def get_sliu_fall():
 
 ###### 3 classes
 
-def test_10():
-    get_test_movement_data('test_keypoints/test10_both_turn', 1)
+# def test_10():
+#     get_test_movement_data('test_keypoints/test10_both_turn', 1)
 
-def test_11():
-    get_test_movement_data('test_keypoints/test11_both_jump', 2)
+# def test_11():
+#     get_test_movement_data('test_keypoints/test11_both_jump', 2)
 
 def test_12():
     get_test_movement_data('test_keypoints/test12_maia_up', 3)
@@ -185,8 +185,8 @@ def test_7():
 def test_8():
     get_test_movement_data('test_keypoints/test8_maia_double', 1)
 
-def test_9():
-    get_test_movement_data('test_keypoints/test9_both_turn', 1)
+# def test_9():
+#     get_test_movement_data('test_keypoints/test9_both_turn', 1)
 
 
 ##### 6 classes 
@@ -256,9 +256,9 @@ def main():
     test_6()
     test_7()
     test_8()
-    test_9()
-    test_10()
-    test_11()
+    # test_9()
+    # test_10()
+    # test_11()
     test_12()
     test_13()
     test_14()

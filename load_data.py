@@ -63,7 +63,7 @@ def train_get_three_dimension(num_trials):
 def test_get_one_keypoint(num_trials, joint_index):
     path = 'mat_test/*.mat'
     list_files = sorted(glob.glob(path))
-    assert num_trials <= 24
+    assert num_trials <= 21
     assert joint_index < NUM_FEATURES
 
     test_data = np.zeros([num_trials, NUM_FRAMES])
@@ -80,7 +80,7 @@ def test_get_one_frame(num_trials, frame_index):
     path = 'mat_test/*.mat'
     # Note: change from before, no longer need sorted list of files b/c of labels
     list_files = sorted(glob.glob(path))
-    assert num_trials <= 24
+    assert num_trials <= 21
     assert frame_index < NUM_FRAMES
 
     test_data = np.zeros([num_trials, NUM_FEATURES])
