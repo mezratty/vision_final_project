@@ -1,4 +1,4 @@
-""" Convert json files for every movement into a mat file"""
+""" Convert json files to mat files that record distance between frames of movement """
 import glob
 import json
 import scipy.io as sio
@@ -9,6 +9,8 @@ NUM_FEATURES = 36
 # Number of frames is the number of frames per movement returned to us
 NUM_FRAMES = 80
 NUM_CLASSES = 3
+NUM_NOSE_INDEX = 1
+NUM_NECK_INDEX = 3
 
 def get_train_movement_data(folder_name, label_val):
     # Get all directories in a folder
@@ -21,43 +23,69 @@ def get_train_movement_data(folder_name, label_val):
 
         # For each instance of a fall and turn, get 80 frames and save to a mat file
         x = (len(list_files) - NUM_FRAMES) // 2
+        prev_keypoints = np.zeros(NUM_FEATURES)
+        prev_dist = 1
         for i in range(x, NUM_FRAMES + x):
             index = i - x
             fname = list_files[i]
             with open(fname) as json_file:
                 json_data = json.load(json_file)
-                keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
-                del keypoints[2::3]
-                matrix[:, index] = keypoints
+                curr_keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
+                del curr_keypoints[2::3]
+                # y distance between nose and neck
+                dist = curr_keypoints[NUM_NECK_INDEX] - curr_keypoints[NUM_NOSE_INDEX]
+                print(dist)
+                if index == 0:
+                    matrix[:, index] = prev_keypoints # always start with all 0 for motion vectors
+                else:
+                    if dist != 0:
+                        vector = np.divide(np.subtract(curr_keypoints, prev_keypoints), dist)
+                        dist = prev_dist
+                    else:
+                        vector = np.divide(np.subtract(curr_keypoints, prev_keypoints), prev_dist)
+                    matrix[:, index] = vector
+                prev_keypoints = curr_keypoints
 
-        mat_fname = 'mat/' + directory[10:-1] + '.mat'
+        mat_fname = 'mat_motion_vector_train/' + directory[10:-1] + '.mat'
         label = np.zeros(NUM_CLASSES)
         label[label_val - 1] = 1
         sio.savemat(mat_fname, mdict = {'keypoints': matrix, 'label': label})
 
 # The way that the data is formatted means that there are no subdirectories for the test data
-# As a result, we get the data in a slightly different way
+# As a result, we get the data in a slightly different way for tests
 def get_test_movement_data(folder_name, label_val):
     list_files = sorted(glob.glob(folder_name + '/*.json'))
     matrix = np.zeros([NUM_FEATURES, NUM_FRAMES])
     x = (len(list_files) - NUM_FRAMES) // 2
     prev_keypoints = np.zeros(NUM_FEATURES)
+    prev_dist = 1
     for i in range(x, NUM_FRAMES + x):
+        # Later will want to edit to choose center 80 frames
         fname = list_files[i]
         with open(fname) as json_file:
             index = i - x
             json_data = json.load(json_file)
-            # In the case that a person is not detected (e.g. too close to camera, use the previous keypoints
-            # Note: we are assuming that all our videos contain a person
+            # If a person is not detected, we assume motion has not changed i.e. distance change is all zero
             if len(json_data["people"]) == 0:
-                matrix[:, index] = prev_keypoints
+                matrix[:, index] = np.zeros(NUM_FEATURES)
             else:
-                keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
-                del keypoints[2::3]
-                matrix[:, index] = keypoints
-                prev_keypoints = keypoints
+                curr_keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
+                del curr_keypoints[2::3]
+                # y distance between nose and neck
+                dist = curr_keypoints[NUM_NECK_INDEX] - curr_keypoints[NUM_NOSE_INDEX]
+                if index == 0:
+                    matrix[:, index] = prev_keypoints # always start with all 0 for motion vector
+                else:
+                    if dist != 0:
+                        vector = np.divide(np.subtract(curr_keypoints, prev_keypoints), dist)
+                        dist = prev_dist
+                    else:
+                        vector = np.divide(prev_keypoints, prev_dist)
+                    matrix[:, index] = vector
 
-    mat_fname = 'mat_test/' + folder_name[15:] + '.mat'
+                prev_keypoints = curr_keypoints
+
+    mat_fname = 'mat_motion_vector_test/' + folder_name[15:] + '.mat'
     label = np.zeros(NUM_CLASSES)
     label[label_val - 1] = 1
     sio.savemat(mat_fname, mdict = {'keypoints': matrix, 'label': label})
@@ -241,6 +269,7 @@ def test_8():
 #     get_test_movement_data('test_keypoints/test16_maia_turn_close', 1)
 
 def main():
+    # 6 sets of training videos, 3 categories
     get_maia_jump()
     get_maia_turn()
     get_maia_fall()
@@ -257,6 +286,7 @@ def main():
     test_6()
     test_7()
     test_8()
+    # These tests are with two people--data is not clean
     # test_9()
     # test_10()
     # test_11()
