@@ -1,4 +1,4 @@
-""" Convert json files for every movement into a mat file"""
+""" Convert json files to mat files that record distance between frames of movement """
 import glob
 import json
 import scipy.io as sio
@@ -21,39 +21,51 @@ def get_train_movement_data(folder_name, label_val):
 
         # For each instance of a fall and turn, get 80 frames and save to a mat file
         x = (len(list_files) - NUM_FRAMES) // 2
+        prev_keypoints = np.zeros(NUM_FEATURES)
         for i in range(x, NUM_FRAMES + x):
             index = i - x
             fname = list_files[i]
             with open(fname) as json_file:
                 json_data = json.load(json_file)
-                keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
-                del keypoints[2::3]
-                matrix[:, index] = keypoints
+                curr_keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
+                del curr_keypoints[2::3]
+                if index == 0:
+                    matrix[:, index] = prev_keypoints # always start with all 0 for distance-based
+                else:
+                    matrix[:, index] = np.subtract(curr_keypoints, prev_keypoints)
+                prev_keypoints = curr_keypoints
 
-        mat_fname = 'mat/' + directory[10:-1] + '.mat'
+        mat_fname = 'mat_distance_train/' + directory[10:-1] + '.mat'
         label = np.zeros(NUM_CLASSES)
         label[label_val - 1] = 1
         sio.savemat(mat_fname, mdict = {'keypoints': matrix, 'label': label})
 
 # The way that the data is formatted means that there are no subdirectories for the test data
-# As a result, we get the data in a slightly different way
+# As a result, we get the data in a slightly different way for tests
 def get_test_movement_data(folder_name, label_val):
     list_files = sorted(glob.glob(folder_name + '/*.json'))
     matrix = np.zeros([NUM_FEATURES, NUM_FRAMES])
     x = (len(list_files) - NUM_FRAMES) // 2
+    prev_keypoints = np.zeros(NUM_FEATURES)
     for i in range(x, NUM_FRAMES + x):
+        # Later will want to edit to choose center 80 frames
         fname = list_files[i]
         with open(fname) as json_file:
             index = i - x
             json_data = json.load(json_file)
+            # If a person is not detected, we assume motion has not changed i.e. distance change is all zero
             if len(json_data["people"]) == 0:
                 matrix[:, index] = np.zeros(NUM_FEATURES)
             else:
-                keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
-                del keypoints[2::3]
-                matrix[:, index] = keypoints
+                curr_keypoints = json_data["people"][0]["pose_keypoints"] # 0 is for first person
+                del curr_keypoints[2::3]
+                if index == 0:
+                    matrix[:, index] = prev_keypoints # always start with all 0 for distance-based
+                else:
+                    matrix[:, index] = np.subtract(curr_keypoints, prev_keypoints)
+                prev_keypoints = curr_keypoints
 
-    mat_fname = 'mat_test/' + folder_name[15:] + '.mat'
+    mat_fname = 'mat_distance_test/' + folder_name[15:] + '.mat'
     label = np.zeros(NUM_CLASSES)
     label[label_val - 1] = 1
     sio.savemat(mat_fname, mdict = {'keypoints': matrix, 'label': label})
@@ -237,12 +249,13 @@ def test_8():
 #     get_test_movement_data('test_keypoints/test16_maia_turn_close', 1)
 
 def main():
-    get_maia_jump()
-    get_maia_turn()
-    get_maia_fall()
-    get_sliu_turn()
-    get_sliu_fall()
-    get_sliu_jump()
+    # 6 training categories
+    # get_maia_jump()
+    # get_maia_turn()
+    # get_maia_fall()
+    # get_sliu_turn()
+    # get_sliu_fall()
+    # get_sliu_jump()
 
     ###### TESTING DATA ########
     test_1()
