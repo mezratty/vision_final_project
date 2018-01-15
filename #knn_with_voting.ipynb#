@@ -43,7 +43,11 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 5,
+=======
    "execution_count": 21,
+>>>>>>> cee8a3259b3e8eab22485b39759ab6201da44dff
    "metadata": {
     "scrolled": false
    },
@@ -54,7 +58,10 @@
      "text": [
       "wrong\n",
       "correct\n",
+<<<<<<< HEAD
+=======
       "correct\n",
+>>>>>>> cee8a3259b3e8eab22485b39759ab6201da44dff
       "correct\n",
       "correct\n",
       "correct\n",
@@ -64,6 +71,12 @@
       "wrong\n",
       "correct\n",
       "correct\n",
+<<<<<<< HEAD
+=======
+      "correct\n",
+      "correct\n",
+      "correct\n",
+>>>>>>> cee8a3259b3e8eab22485b39759ab6201da44dff
       "correct\n",
       "correct\n",
       "wrong\n",
@@ -71,9 +84,13 @@
       "correct\n",
       "correct\n",
       "wrong\n",
+<<<<<<< HEAD
       "wrong\n",
       "correct\n",
       "0.7142857142857144\n"
+=======
+      "0.8571428571428574\n"
+>>>>>>> cee8a3259b3e8eab22485b39759ab6201da44dff
      ]
     }
    ],
@@ -103,12 +120,22 @@
     "label_votes = np.zeros([test_trials, NUM_CLASSES])\n",
     "accuracies_for_tests = np.zeros(test_trials)\n",
     "\n",
+<<<<<<< HEAD
     "best_features_for_l1 = [7, 9, 17, 23]\n",
     "best_features_for_euclidean = [9, 17]\n",
     "best_features_for_chebychev = [5, 9, 13, 21, 31]\n",
     "\n",
     "for i in range(test_trials):\n",
     "    for j in best_features_for_chebychev:\n",
+=======
+    "best_features_for_l1 = [7, 9, 17, 20, 23]\n",
+    "best_features_for_euclidean = [9, 12, 17]\n",
+    "\n",
+    "for i in range(test_trials):\n",
+    "#     for j in range(NUM_FEATURES):\n",
+>>>>>>> cee8a3259b3e8eab22485b39759ab6201da44dff
+    "#     for j in best_features_for_l1:\n",
+    "    for j in best_features_for_euclidean:\n",
     "    # for each test example, classify with one keypoint at a time -- \n",
     "    # each keypoint will vote for the label it predicts\n",
     "        ###### Training code\n",
